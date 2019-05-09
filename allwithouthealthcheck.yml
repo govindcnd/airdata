@@ -16,7 +16,7 @@ spec:
       containers:
       - name: countriesapp
         image: govindcnd/ekstestcountries:latest
-        imagePullPolicy: Never
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080
 #        readinessProbe:
@@ -51,7 +51,7 @@ spec:
       containers:
       - name: airports
         image: govindcnd/ekstestairports:latest
-        imagePullPolicy: Never
+        imagePullPolicy: IfNotPresent
         resources:
           limits:
             memory: "2000Mi"
@@ -90,7 +90,7 @@ spec:
       containers:
       - name: airports2
         image: govindcnd/ekstestairports2:latest
-        imagePullPolicy: Never
+        imagePullPolicy: IfNotPresent
         resources:
           limits:
             memory: "2000Mi"
