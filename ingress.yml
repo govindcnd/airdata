@@ -1,0 +1,41 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: web-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  rules:
+    - http:
+        paths:
+         - path: /countries
+           backend:
+            serviceName: countriesapp
+            servicePort: 8082
+
+         - path: /airports/[a-zA-Z]{2}
+           backend:
+             serviceName: airports
+             servicePort: 8081
+
+         - path: /airports/[a-zA-Z]{3}
+           backend:
+            serviceName: airports2
+            servicePort: 8083
+
+         - path: /airports\?
+           backend:
+            serviceName: airports2
+            servicePort: 8083
+
+
+         - path: /airports
+           backend:
+             serviceName: airports
+             servicePort: 8081
+
+         - path: /search
+           backend:
+             serviceName: airports2
+             servicePort: 8083
