@@ -6,7 +6,7 @@ bash -x runway.sh
 
 To set up the stack on EKS run 
 
-bash -x apponeks.sh
+bash -x EKS/apponeks.sh
 
 
 Please Note :
