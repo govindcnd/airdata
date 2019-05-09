@@ -1,10 +1,9 @@
 !#/bin/bash
-eval $(minikube docker-env)
-minicube addons enable ingress
 kubectl apply -f allwithouthealthcheck.yml 
 kubectl apply -f ingress.yml
-hostaddress=$(minikube ip)
+hostaddress=$(kubectl get ing web-ingress | awk -F " " '{print  $3}' | awk 'NR==2')
 echo "access your apps using https://$hostaddress/service/param"
+echo "sample url's"
 echo "https://$hostaddress/countries"
 echo "https://$hostaddress/airports/NL"
 echo "https://$hostaddress/airports/EHAM"
