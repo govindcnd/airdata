@@ -1,0 +1,161 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: countriesapp
+spec:
+  selector:
+    matchLabels:
+      app: countriesapp
+  replicas: 1 # tells deployment to run 1 pods matching the template
+  template: # create pods using pod definition in this template
+    metadata:
+      labels:
+        app: countriesapp
+    spec:
+      containers:
+      - name: countriesapp
+        image: govindcnd/ekstestcountries:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+        readinessProbe:
+          initialDelaySeconds: 660
+          timeoutSeconds: 5
+          periodSeconds: 30
+          httpGet:
+            path: /health/live
+            port: 8080
+        livenessProbe:
+          initialDelaySeconds: 700
+          timeoutSeconds: 5
+          periodSeconds: 30
+          httpGet:
+            path: /health/ready
+            port: 8080
+
+          
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: airports
+spec:
+  selector:
+    matchLabels:
+      app: airports
+  replicas: 1 # tells deployment to run 1 pods matching the template
+  template: # create pods using pod definition in this template
+    metadata:
+      labels:
+        app: airports
+    spec:
+      containers:
+      - name: airports
+        image: govindcnd/ekstestairports:latest
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            memory: "2000Mi"
+          requests:
+            memory: "1000Mi"
+        ports:
+        - containerPort: 8080
+        readinessProbe:
+          initialDelaySeconds: 660
+          timeoutSeconds: 5
+          periodSeconds: 30
+          httpGet:
+            path: /health/live
+            port: 8080
+        livenessProbe:
+          initialDelaySeconds: 700
+          timeoutSeconds: 5
+          periodSeconds: 30
+          httpGet:
+            path: /health/ready
+            port: 8080
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: airports2
+spec:
+  selector:
+    matchLabels:
+      app: airports2
+  replicas: 1 # tells deployment to run 1 pods matching the template
+  template: # create pods using pod definition in this template
+    metadata:
+      labels:
+        app: airports2
+    spec:
+      containers:
+      - name: airports2
+        image: govindcnd/ekstestairports2:latest
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            memory: "2000Mi"
+          requests:
+            memory: "1000Mi"
+        ports:
+        - containerPort: 8080
+        readinessProbe:
+          initialDelaySeconds: 660
+          timeoutSeconds: 5
+          periodSeconds: 30
+          httpGet:
+            path: /health/live
+            port: 8080
+        livenessProbe:
+          initialDelaySeconds: 700
+          timeoutSeconds: 5
+          periodSeconds: 30
+          httpGet:
+            path: /health/ready
+            port: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: countriesapp
+spec:
+  type: NodePort
+  ports: 
+  - port: 8082
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: countriesapp
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: airports
+spec:
+  type: NodePort
+  ports:
+  - port: 8081
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: airports
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: airports2
+spec:
+  type: NodePort
+  ports: 
+  - port: 8083
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: airports2
